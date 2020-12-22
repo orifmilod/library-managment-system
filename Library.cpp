@@ -15,6 +15,18 @@ std::string RandomString(int len) {
   }
   return newstr;
 }
+
+Library::Library() {
+  int resultCode = sqlite3_open("test.db", &db);
+
+  if (resultCode) {
+    std::cout << "Can't open database: %s\n" << sqlite3_errmsg(db) << std::endl;
+    return;
+  }
+
+  std::cout << "Opened database successfully" << std::endl;
+}
+
 Book Library::AddBook(const std::string &bookName,
                       const int &bookYearOfPublish) {
 

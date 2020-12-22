@@ -3,16 +3,22 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <sqlite3.h>
 
 class Library {
 private:
   int totalNumberOfBooks;
   int totalBooksReserved;
+  sqlite3 *db;
+
   std::unordered_map<std::string, Book> books;
 
 public:
-  Book AddBook(const std::string &bookName, const int &bookYearOfPublish);
   void PrintAllBooks();
+
+  Library();
+
+  Book AddBook(const std::string &bookName, const int &bookYearOfPublish);
 
   Book UpdateBook(const std::string &bookId, const std::string name,
                   const int yearOfPublish);

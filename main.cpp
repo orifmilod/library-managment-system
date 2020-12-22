@@ -1,5 +1,6 @@
 #include "Library.h"
 #include <ostream>
+#include <sqlite3.h>
 #include <string>
 
 int main() {

@@ -23,10 +23,11 @@ add_executable(${PROJECT_NAME}
   main.cpp
 )
 
+find_package (SQLite3)
+
 target_link_libraries(
   ${PROJECT_NAME} 
   PRIVATE library-a
   PRIVATE book-a
-
+  PRIVATE SQLite3
 )
-
