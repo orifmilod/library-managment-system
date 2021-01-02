@@ -12,8 +12,8 @@ private:
 
 public:
   std::string name;
-  int yearOfPublish; // maybe use a Date type ??
-  BOOK_STATUS status{FREE};
+  int yearOfPublish;
+  BOOK_STATUS status;
   std::string borrowerId;
 
   Book(const std::string &bookId, const std::string &_name,

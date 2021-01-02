@@ -18,6 +18,8 @@ public:
 
   Library();
 
+  ~Library();
+
   Book AddBook(const std::string &bookName, const int &bookYearOfPublish);
 
   Book UpdateBook(const std::string &bookId, const std::string name,

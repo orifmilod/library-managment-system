@@ -1,6 +1,6 @@
 #include "Library.h"
 #include "Book.h"
-#include <cstdlib>
+#include "SqlCommands.h"
 
 #define ID_LEN 6
 
@@ -16,6 +16,47 @@ std::string RandomString(int len) {
   return newstr;
 }
 
+/*
+ * Arguments:
+ *   unused - Ignored in this case, see the documentation for sqlite3_exec
+ *    count - The number of columns in the result set
+ *     data - The row's data
+ *  columns - The column names
+ */
+static int database_callback(void *list, int count, char **data,
+                             char **columns) {
+  int index;
+
+  int yearOfPublish;
+  std::string bookId, bookName, bookStatus, borrowerId;
+
+  for (index = 0; index < count; index++) {
+    if (strcmp(columns[index], "id") == 0) {
+      bookId = data[index];
+    }
+
+    if (strcmp(columns[index], "name") == 0) {
+      bookName = data[index];
+    }
+
+    if (strcmp(columns[index], "bookStatus") == 0) {
+      bookStatus = data[index];
+    }
+
+    if (strcmp(columns[index], "borrowerId") == 0) {
+      borrowerId = data[index];
+    }
+
+    if (strcmp(columns[index], "yearOfPublish") == 0) {
+      yearOfPublish = atoi(data[index]);
+    }
+  }
+
+  printf("%s %s %s %s %d \n", bookId.c_str(), bookName.c_str(),
+         bookStatus.c_str(), borrowerId.c_str(), yearOfPublish);
+  return 0;
+}
+
 Library::Library() {
   int resultCode = sqlite3_open("test.db", &db);
 
@@ -24,7 +65,16 @@ Library::Library() {
     return;
   }
 
+  // sqlite3_exec(db, "", database_callback, NULL, NULL);
+  sqlite3_exec(db, SqlCommands::CreateBookTable.c_str(), database_callback,
+               &books, NULL);
+
   std::cout << "Opened database successfully" << std::endl;
+}
+
+Library::~Library() {
+  std::cout << "Closing database connection!" << std::endl;
+  sqlite3_close(db);
 }
 
 Book Library::AddBook(const std::string &bookName,
